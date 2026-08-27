@@ -7,13 +7,10 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; background-color: #0b1120; color: #f8fafc; }
         .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
         .gold-text { color: #fbbf24; }
-        .gold-border { border-color: #f59e0b; }
         .card-dark { background-color: #111827; border: 1px solid #1f2937; }
         .input-dark { background-color: #0f172a; border: 1px solid #1e293b; color: #fff; }
         .input-dark:focus { border-color: #f59e0b; outline: none; }
@@ -36,55 +33,55 @@
 
             <!-- Tab Switcher -->
             <div class="grid grid-cols-2 bg-[#0b1120] p-1.5 rounded-2xl mb-6 border border-slate-800">
-                <button onclick="setAuthTab('login')" id="tab-btn-login" class="py-2.5 text-xs font-bold rounded-xl gold-gradient text-slate-950 shadow-md transition-all">
+                <button type="button" onclick="setAuthTab('login')" id="tab-btn-login" class="py-2.5 text-xs font-bold rounded-xl gold-gradient text-slate-950 shadow-md transition-all">
                     تسجيل الدخول
                 </button>
-                <button onclick="setAuthTab('register')" id="tab-btn-register" class="py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all">
+                <button type="button" onclick="setAuthTab('register')" id="tab-btn-register" class="py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all">
                     حساب جديد (2+ CV)
                 </button>
             </div>
 
             <!-- Login Form -->
-            <form id="form-login" onsubmit="handleAuth(event, 'login')">
+            <div id="form-login">
                 <div class="space-y-4 mb-6">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني للشركة *</label>
-                        <input type="email" id="login-email" value="mohamedsaamiir0@gmail.com" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                        <input type="email" id="login-email" value="mohamedsaamiir0@gmail.com" class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور *</label>
-                        <input type="password" id="login-password" value="12345678" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                        <input type="password" id="login-password" value="12345678" class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
                 </div>
-                <button type="submit" class="w-full gold-gradient text-slate-950 font-black py-3 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all">
+                <button type="button" onclick="doLogin()" class="w-full gold-gradient text-slate-950 font-black py-3.5 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all cursor-pointer">
                     دخول إلى المنصة ←
                 </button>
-            </form>
+            </div>
 
-            <!-- Register Form (Hidden by default) -->
-            <form id="form-register" class="hidden" onsubmit="handleAuth(event, 'register')">
+            <!-- Register Form -->
+            <div id="form-register" class="hidden">
                 <div class="space-y-4 mb-6">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم الشركة / المؤسسة *</label>
-                        <input type="text" id="reg-company" placeholder="شركة الأفق للتطوير" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                        <input type="text" id="reg-company" placeholder="شركة الأفق للتطوير" class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني المهني *</label>
-                        <input type="email" id="reg-email" placeholder="hr@company.com" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                        <input type="email" id="reg-email" placeholder="hr@company.com" class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور *</label>
-                        <input type="password" id="reg-password" placeholder="••••••••" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                        <input type="password" id="reg-password" placeholder="••••••••" class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
                 </div>
-                <button type="submit" class="w-full gold-gradient text-slate-950 font-black py-3 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all">
+                <button type="button" onclick="doRegister()" class="w-full gold-gradient text-slate-950 font-black py-3.5 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all cursor-pointer">
                     إنشاء حساب واستلام 2 CV مجاناً ←
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
-    <!-- Main Platform View (Shown after login) -->
+    <!-- Main Platform View -->
     <div id="main-platform" class="flex flex-col min-h-screen">
         <!-- Header -->
         <header class="bg-[#111827] border-b border-slate-800 sticky top-0 z-40">
@@ -101,13 +98,13 @@
 
                 <!-- Navigation Tabs -->
                 <nav class="hidden md:flex items-center gap-1 bg-[#0b1120] p-1.5 rounded-xl border border-slate-800">
-                    <button onclick="switchTab('explore')" id="nav-explore" class="px-4 py-1.5 text-xs font-bold rounded-lg gold-gradient text-slate-950 shadow-sm transition-all">
+                    <button type="button" onclick="switchTab('explore')" id="nav-explore" class="px-4 py-1.5 text-xs font-bold rounded-lg gold-gradient text-slate-950 shadow-sm transition-all">
                         استكشاف الكفاءات
                     </button>
-                    <button onclick="switchTab('pricing')" id="nav-pricing" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                    <button type="button" onclick="switchTab('pricing')" id="nav-pricing" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
                         الباقات والأسعار
                     </button>
-                    <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                    <button type="button" onclick="switchTab('admin')" id="nav-admin" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
                         لوحة التحكم
                     </button>
                 </nav>
@@ -118,7 +115,7 @@
                         <span class="text-[11px] text-slate-400">الرصيد:</span>
                         <span id="user-points" class="text-xs font-black text-amber-400">5 سير ذاتية</span>
                     </div>
-                    <button onclick="switchTab('pricing')" class="gold-gradient text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition-all shadow-md">
+                    <button type="button" onclick="switchTab('pricing')" class="gold-gradient text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition-all shadow-md">
                         + شحن الرصيد
                     </button>
                 </div>
@@ -158,4 +155,7 @@
                                 <option value="0">كافة سنوات الخبرة</option>
                                 <option value="3">3 سنوات فما فوق</option>
                                 <option value="5">5 سنوات فما فوق</option>
-                  
+                                <option value="8">8 سنوات فما فوق (خبير)</option>
+                            </select>
+                        </div>
+            
