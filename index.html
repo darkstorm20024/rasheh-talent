@@ -3,123 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة رشّح | قاعدة بيانات الكفاءات والسير الذاتية</title>
+    <title>رَشّـــح | RASHEH TALENT - بوابة استقطاب الكفاءات الذكية</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Cairo', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0b1120; color: #f8fafc; }
+        .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
+        .gold-text { color: #fbbf24; }
+        .gold-border { border-color: #f59e0b; }
+        .card-dark { background-color: #111827; border: 1px solid #1f2937; }
+        .input-dark { background-color: #0f172a; border: 1px solid #1e293b; color: #fff; }
+        .input-dark:focus { border-color: #f59e0b; outline: none; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Header -->
-    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center font-black text-xl text-slate-900">ر</div>
-                <div>
-                    <span class="text-xl font-black text-white">رَشّـــح</span>
-                    <span class="text-xs text-emerald-400 block font-semibold">منصة الكفاءات الذكية</span>
+    <!-- Auth View (Login / Register Modal Screen) -->
+    <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0b1120] bg-opacity-95 backdrop-blur-md">
+        <div class="bg-[#111827] border border-slate-800 rounded-3xl max-w-md w-full p-8 shadow-2xl relative">
+            <!-- Brand Header -->
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-tr from-amber-500 to-amber-300 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20 text-slate-950 font-black text-2xl">
+                    رَشّـحْ
                 </div>
+                <h1 class="text-2xl font-black text-amber-400 tracking-wider">رَشّـــحْ</h1>
+                <span class="text-xs text-amber-400/80 font-bold tracking-widest block uppercase mt-1">RASHEH TALENT</span>
+                <p class="text-xs text-slate-400 mt-2 font-medium">بوابة الشركات الأولى لترشيح الكفاءات الذكية</p>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-xs">
-                    <span class="text-slate-400">رصيدك:</span> <span class="font-bold text-emerald-400">5 نقاط</span>
-                </div>
-                <button onclick="alert('لشحن رصيد باقتك تواصل معنا')" class="bg-emerald-500 text-slate-900 font-bold px-3 py-1.5 rounded-lg text-xs">+ شحن</button>
+
+            <!-- Tab Switcher -->
+            <div class="grid grid-cols-2 bg-[#0b1120] p-1.5 rounded-2xl mb-6 border border-slate-800">
+                <button onclick="setAuthTab('login')" id="tab-btn-login" class="py-2.5 text-xs font-bold rounded-xl gold-gradient text-slate-950 shadow-md transition-all">
+                    تسجيل الدخول
+                </button>
+                <button onclick="setAuthTab('register')" id="tab-btn-register" class="py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all">
+                    حساب جديد (2+ CV)
+                </button>
             </div>
-        </div>
-    </header>
 
-    <!-- Main -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
-        <div class="text-center max-w-2xl mx-auto mb-8">
-            <h1 class="text-3xl font-black text-slate-900 mb-2">استقطب كفاءاتك في ثوانٍ</h1>
-            <p class="text-slate-600 text-sm">ابحث بالاسم، المسمى الوظيفي، أو المهارات وتواصل مع الكفاءات المعتمدة.</p>
-        </div>
-
-        <!-- Search Box -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 mb-8">
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                <div class="sm:col-span-6">
-                    <input type="text" id="keyword" oninput="filterCandidates()" placeholder="🔍 ابحث بالمهارة أو الوظيفة (مثال: محاسب، مهندس، مبيعات...)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
-                </div>
-                <div class="sm:col-span-4">
-                    <select id="city" onchange="filterCandidates()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="">كافة المدن (الرياض، جدة، الدمام...)</option>
-                        <option value="الرياض">الرياض</option>
-                        <option value="جدة">جدة</option>
-                        <option value="الدمام">الدمام</option>
-                        <option value="مكة">مكة المكرمة</option>
-                        <option value="المدينة">المدينة المنورة</option>
-                        <option value="الخبر">الخبر</option>
-                    </select>
-                </div>
-                <div class="sm:col-span-2">
-                    <button onclick="filterCandidates()" class="w-full bg-slate-900 text-white font-bold py-2.5 rounded-xl text-sm hover:bg-slate-800">تصفية</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cards Grid -->
-        <div id="candidates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </main>
-
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-        منصة رشّح لاستقطاب الكفاءات والسير الذاتية © 2026
-    </footer>
-
-    <script>
-        const candidates = [
-            { id: 1, full_name: "م. سعد بن خالد العتيبي", job_title: "مدير مشاريع تقنية (PMP)", exp: 8, city: "الرياض", skills: "Scrum, Agile, JIRA, Python, IT Management" },
-            { id: 2, full_name: "أ. سارة إبراهيم الشمري", job_title: "أخصائية استقطاب مواهب و HR", exp: 5, city: "جدة", skills: "Talent Acquisition, CIPD, HR Policies, Payroll" },
-            { id: 3, full_name: "م. عبدالله فهد الدوسري", job_title: "مهندس برمجيات أول Full-Stack", exp: 6, city: "الدمام", skills: "React, Node.js, FastAPI, PostgreSQL, AWS" },
-            { id: 4, full_name: "أ. مها ناصر القحطاني", job_title: "مديرة تسويق رقمي ونمو", exp: 4, city: "الرياض", skills: "SEO, Google Ads, Meta Ads, Growth Hacking" },
-            { id: 5, full_name: "أ. محمد طارق الزهراني", job_title: "محلل مالي ونمذجة مالية", exp: 7, city: "الرياض", skills: "Financial Modeling, Power BI, Excel, CMA" },
-            { id: 6, full_name: "م. فيصل مساعد الغامدي", job_title: "مهندس أمن سيبراني SOC", exp: 5, city: "الرياض", skills: "SIEM, SOC, Network Security, CEH, ISO 27001" },
-            { id: 7, full_name: "أ. ريم سليمان الحربي", job_title: "مديرة مبيعات وتطوير أعمال", exp: 6, city: "جدة", skills: "B2B Sales, CRM, Negotiation, Key Accounts" },
-            { id: 8, full_name: "م. عمر خالد السبيعي", job_title: "مهندس ذكاء اصطناعي وتحليل بيانات", exp: 4, city: "الرياض", skills: "Machine Learning, PyTorch, LangChain, Pandas" },
-            { id: 9, full_name: "أ. نورة عبدالعزيز الشهري", job_title: "مصممة تجربة مستخدم UI/UX", exp: 5, city: "الدمام", skills: "Figma, User Research, Wireframing, Prototyping" }
-        ];
-
-        function render(list) {
-            const grid = document.getElementById('candidates-grid');
-            if(list.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-12 bg-white rounded-2xl border text-slate-500">⚠️ لا توجد نتائج مطابقة</div>';
-                return;
-            }
-            grid.innerHTML = list.map(c => `
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <!-- Login Form -->
+            <form id="form-login" onsubmit="handleAuth(event, 'login')">
+                <div class="space-y-4 mb-6">
                     <div>
-                        <div class="flex items-start justify-between mb-2">
-                            <h3 class="font-bold text-slate-900 text-base">${c.full_name}</h3>
-                            <span class="bg-emerald-50 text-emerald-700 text-[11px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">✓ موثق</span>
-                        </div>
-                        <div class="text-emerald-600 font-bold text-xs mb-3">${c.job_title}</div>
-                        <div class="flex items-center gap-3 text-xs text-slate-500 mb-3 bg-slate-50 p-2.5 rounded-xl">
-                            <span>📍 ${c.city}</span><span>•</span><span>⏳ خبرة: ${c.exp} سنوات</span>
-                        </div>
-                        <div class="text-xs text-slate-600 mb-5">
-                            <span class="font-bold text-slate-700">المهارات:</span> ${c.skills}
-                        </div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني للشركة *</label>
+                        <input type="email" id="login-email" value="mohamedsaamiir0@gmail.com" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
                     </div>
-                    <button onclick="alert('تم إرسال طلب فتح السيرة الذاتية للمرشح #${c.id}')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition-all">
-                        🔓 فتح السيرة الذاتية (1 نقطة)
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور *</label>
+                        <input type="password" id="login-password" value="12345678" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                    </div>
+                </div>
+                <button type="submit" class="w-full gold-gradient text-slate-950 font-black py-3 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all">
+                    دخول إلى المنصة ←
+                </button>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form id="form-register" class="hidden" onsubmit="handleAuth(event, 'register')">
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم الشركة / المؤسسة *</label>
+                        <input type="text" id="reg-company" placeholder="شركة الأفق للتطوير" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني المهني *</label>
+                        <input type="email" id="reg-email" placeholder="hr@company.com" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور *</label>
+                        <input type="password" id="reg-password" placeholder="••••••••" required class="w-full input-dark rounded-xl px-4 py-3 text-xs">
+                    </div>
+                </div>
+                <button type="submit" class="w-full gold-gradient text-slate-950 font-black py-3 rounded-xl text-xs shadow-lg shadow-amber-500/20 hover:brightness-110 transition-all">
+                    إنشاء حساب واستلام 2 CV مجاناً ←
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Platform View (Shown after login) -->
+    <div id="main-platform" class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-[#111827] border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 gold-gradient text-slate-950 font-black rounded-xl flex items-center justify-center text-xl shadow-md">
+                        رَ
+                    </div>
+                    <div>
+                        <span class="text-lg font-black text-amber-400">رَشّـــحْ</span>
+                        <span class="text-[10px] text-slate-400 block font-bold">RASHEH TALENT</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center gap-1 bg-[#0b1120] p-1.5 rounded-xl border border-slate-800">
+                    <button onclick="switchTab('explore')" id="nav-explore" class="px-4 py-1.5 text-xs font-bold rounded-lg gold-gradient text-slate-950 shadow-sm transition-all">
+                        استكشاف الكفاءات
+                    </button>
+                    <button onclick="switchTab('pricing')" id="nav-pricing" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                        الباقات والأسعار
+                    </button>
+                    <button onclick="switchTab('admin')" id="nav-admin" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                        لوحة التحكم
+                    </button>
+                </nav>
+
+                <!-- Balance & Actions -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-[#0b1120] border border-slate-800 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+                        <span class="text-[11px] text-slate-400">الرصيد:</span>
+                        <span id="user-points" class="text-xs font-black text-amber-400">5 سير ذاتية</span>
+                    </div>
+                    <button onclick="switchTab('pricing')" class="gold-gradient text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition-all shadow-md">
+                        + شحن الرصيد
                     </button>
                 </div>
-            `).join('');
-        }
+            </div>
+        </header>
 
-        function filterCandidates() {
-            const kw = document.getElementById('keyword').value.toLowerCase().trim();
-            const city = document.getElementById('city').value.trim();
-            const filtered = candidates.filter(c => {
-                const matchKw = !kw || c.job_title.toLowerCase().includes(kw) || c.skills.toLowerCase().includes(kw) || c.full_name.toLowerCase().includes(kw);
-                const matchCity = !city || c.city.includes(city);
-                return matchKw && matchCity;
-            });
-            render(filtered);
-        }
+        <!-- Body Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+            
+            <!-- SECTION 1: Explore Candidates -->
+            <section id="tab-explore">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="bg-amber-500/10 text-amber-400 text-[11px] font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block border border-amber-500/20">قاعدة كفاءات المملكة المعتمدة</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">استقطب كفاءاتك في ثوانٍ معدودة</h2>
+                    <p class="text-slate-400 text-xs">مطابقة ذكية بالوظائف والمهارات مع فتح فوري للسير الذاتية.</p>
+                </div>
 
-        render(candidates);
-    </script>
-</body>
-</html>
+                <!-- Search & Filters -->
+                <div class="card-dark rounded-2xl p-4 sm:p-5 mb-8 border border-slate-800 shadow-xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                        <div class="sm:col-span-6">
+                            <input type="text" id="keyword" oninput="filterCandidates()" placeholder="🔍 ابحث بالمسمى الوظيفي أو المهارة (محاسب، مهندس، مبيعات...)" class="w-full input-dark rounded-xl px-4 py-2.5 text-xs">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <select id="city" onchange="filterCandidates()" class="w-full input-dark rounded-xl px-3 py-2.5 text-xs">
+                                <option value="">كافة المدن (الرياض، جدة، الدمام...)</option>
+                                <option value="الرياض">الرياض</option>
+                                <option value="جدة">جدة</option>
+                                <option value="الدمام">الدمام</option>
+                                <option value="مكة">مكة المكرمة</option>
+                                <option value="المدينة">المدينة المنورة</option>
+                                <option value="الخبر">الخبر</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-3">
+                            <select id="min-exp" onchange="filterCandidates()" class="w-full input-dark rounded-xl px-3 py-2.5 text-xs">
+                                <option value="0">كافة سنوات الخبرة</option>
+                                <option value="3">3 سنوات فما فوق</option>
+                                <option value="5">5 سنوات فما فوق</option>
+                  
