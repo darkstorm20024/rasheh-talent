@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة رشح - Rasheh Talent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFE259 0%, #DDA035 50%, #9B7018 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-bg {
+            background: linear-gradient(135deg, #FFE259 0%, #DDA035 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen justify-between">
+
+    <!-- 1. شاشة تسجيل الدخول الأولى -->
+    <div id="authScreen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <div class="max-w-md w-full bg-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-800 relative">
+            <div class="text-center mb-6 flex flex-col items-center">
+                <div class="flex items-center justify-center gap-3.5 mb-2">
+                    <div class="w-13 h-13 p-3 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                        <svg class="w-7 h-7 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div class="text-right">
+                        <h1 class="text-4xl font-black gold-gradient-text tracking-tight leading-none">رَشِّــحْ</h1>
+                        <span class="text-[10px] font-light text-amber-200/80 tracking-[0.35em] uppercase block mt-1.5">RASHEH TALENT</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">بوابة الشركات الأولى لترشيح الكفاءات الذكية</p>
+            </div>
+
+            <div class="flex gap-2 bg-slate-950/60 p-1.5 rounded-2xl mb-6 border border-slate-800">
+                <button id="authTabLogin" onclick="toggleAuthTab('login')" class="flex-1 py-2.5 text-xs font-bold rounded-xl gold-bg text-slate-950 shadow-md transition-all">تسجيل الدخول</button>
+                <button id="authTabRegister" onclick="toggleAuthTab('register')" class="flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all">حساب جديد (+2 CV)</button>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">البريد الإلكتروني للشركة *</label>
+                    <input type="email" id="loginEmail" required autocomplete="username email" placeholder="hr@company.com" class="w-full text-sm px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">كلمة المرور *</label>
+                    <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="••••••••" class="w-full text-sm px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none transition-all">
+                </div>
+                <button type="submit" id="loginSubmitBtn" class="w-full gold-bg hover:opacity-95 text-slate-950 font-black py-3.5 rounded-xl text-xs transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center">
+                    <span>دخول إلى المنصة &larr;</span>
+                </button>
+            </form>
+
+            <form id="registerForm" class="space-y-3 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">اسم الشركة أو المؤسسة *</label>
+                    <input type="text" id="regCompanyName" required placeholder="شركة الرواد للتقنية" class="w-full text-sm px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">اسم مسؤول التوظيف *</label>
+                    <input type="text" id="regContactName" required placeholder="أحمد المنصور" class="w-full text-sm px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">البريد *</label>
+                        <input type="email" id="regEmail" required autocomplete="email" placeholder="hr@domain.com" class="w-full text-sm px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">الهاتف *</label>
+                        <input type="tel" id="regPhone" required placeholder="05xxxxxxxx" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-700 text-white focus:border-amber-400 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">تعيين كلمة المرور *</label>
+                    <input type="password" id="regPassword" required autocomplete="new-password" placeholder="••••••••" class="w-full text-sm px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:border-amber-400 outline-none">
+                </div>
+                <button type="submit" id="regSubmitBtn" class="w-full gold-bg hover:opacity-95 text-slate-950 font-black py-3.5 rounded-xl text-xs transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center">
+                    <span>إنشاء الحساب واستلام 2 CV مجاناً 🎉</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. المنصة الرئيسية -->
+    <div id="mainAppScreen" class="hidden flex-col min-h-screen justify-between">
+        <div>
+            <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-40 shadow-sm text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                        <div class="w-10 h-10 p-2 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 flex items-center justify-center shadow-md shadow-amber-500/20">
+                            <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-2xl font-black gold-gradient-text tracking-tight leading-none block">رَشِّــحْ</span>
+                            <span class="text-[9px] font-light text-amber-200/80 tracking-[0.3em] uppercase block mt-0.5">RASHEH TALENT</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                            <button id="navHome" onclick="navigateTo('home')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold gold-bg text-slate-950 shadow-sm transition-all">🏠 الرئيسية</button>
+                            <button id="navSearch" onclick="navigateTo('search')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">🔍 البحث والترشيح</button>
+                            <button id="navPlans" onclick="navigateTo('plans')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">💳 باقات الاشتراك</button>
+                            <button id="navAdmin" onclick="navigateTo('admin')" style="display: none;" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 transition-all">⚙️ لوحة الإدارة</button>
+                        </div>
+
+                        <div class="flex items-center gap-2 bg-amber-950/40 border border-amber-600/40 px-3.5 py-1.5 rounded-xl text-xs font-bold text-amber-300">
+                            <span id="userNameDisplay">شركة</span>
+                            <span id="userCreditsDisplay" class="gold-bg text-slate-950 px-2 py-0.5 rounded-lg text-xs font-black">2 CV</span>
+                        </div>
+
+                        <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-400 font-bold px-2 py-1.5 rounded-xl transition-all">خروج</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. الرئيسية -->
+            <main id="pageHome" class="space-y-16 pb-16">
+                <section class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white py-20 px-4 border-b border-slate-800 text-center">
+                    <div class="max-w-5xl mx-auto">
+                        <span class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-4 py-1.5 rounded-full mb-6">⚡ مدعوم بالذكاء الاصطناعي والفرز الدقيق</span>
+                        <h1 class="text-4xl sm:text-6xl font-black mb-6 leading-tight">وظّف أفضل الكفاءات في ثوانٍ مع <br><span class="gold-gradient-text">منصة رَشِّــحْ الذكية</span></h1>
+                        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-8">محرك ذكي يربط أصحاب الشركات بآلاف الكفاءات والكوادر الجاهزة، مع حساب نسب التطابق الفوري وتنزيل السير الذاتية بضغطة زر.</p>
+                        <div class="flex items-center justify-center gap-4">
+                            <button onclick="navigateTo('search')" class="gold-bg text-slate-950 font-black px-8 py-4 rounded-2xl text-sm shadow-xl shadow-amber-500/20 hover:opacity-95 transition-all">🚀 ابدأ البحث والمطابقة الآن</button>
+                            <button onclick="navigateTo('plans')" class="bg-slate-900 border border-slate-700 text-white font-bold px-6 py-4 rounded-2xl text-sm hover:bg-slate-800 transition-all">💳 استعراض باقات الاشتراك</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="max-w-7xl mx-auto px-4 text-center">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">موثوق به من قِبل رواد الأعمال وكبرى الشركات</p>
+                    <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all">
+                        <span class="text-xl font-black text-slate-700">ARAMCO SUPPLY</span>
+                        <span class="text-xl font-black text-slate-700">AL-RAJHI CORP</span>
+                        <span class="text-xl font-black text-slate-700">ELM TECH</span>
+                        <span class="text-xl font-black text-slate-700">NEOM PARTNERS</span>
+                    </div>
+                </section>
+
+                <section class="max-w-6xl mx-auto px-4">
+                    <div class="bg-gradient-to-tr from-slate-900 to-indigo-950 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-5 space-y-4">
+                            <span class="text-amber-400 text-xs font-bold uppercase tracking-wider">🎥 جولة سريعة في المنصة</span>
+                            <h2 id="homeVideoTitle" class="text-2xl sm:text-3xl font-black leading-snug">كيف توفر منصة رشّح 80% من وقت ومصاريف التوظيف؟</h2>
+                            <p id="homeVideoDesc" class="text-xs text-slate-300 leading-relaxed">شاهد العرض التوضيحي لمعرفة كيف يقوم محرك الفرز بتحليل المسميات وسنوات الخبرة والمهارات لمطابقة المرشح الأنسب مع شاغرك الوظيفي فوراً.</p>
+                        </div>
+                        <div class="lg:col-span-7 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl aspect-video">
+                            <iframe id="homeVideoIframe" class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="فيديو تعريفي" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="max-w-7xl mx-auto px-4">
+                    <div class="text-center mb-10">
+                        <span class="bg-amber-50 text-amber-800 text-xs font-bold px-3.5 py-1.5 rounded-full border border-amber-200">آراء العملاء</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-3">ماذا يقول أصحاب الأعمال عن "رشّح"؟</h2>
+                    </div>
+                    <div id="homeTestimonialsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                </section>
+
+                <!-- قسم المقالات -->
+                <section class="max-w-7xl mx-auto px-4">
+                    <div class="flex items-center justify-between mb-8 pb-3 border-b border-slate-200">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">آخر أخبار سوق العمل والمنصة</h3>
+                            <p class="text-xs text-slate-500">اضغط على أي مقال لقراءة التقرير الكامل والتفاصيل</p>
+                        </div>
+                    </div>
+                    <div id="homeNewsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                </section>
+            </main>
+
+            <!-- صفحة قراءة المقال الفردي -->
+            <main id="pageArticle" class="hidden max-w-4xl mx-auto px-4 py-12">
+                <button onclick="navigateTo('home')" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-800 mb-6 bg-indigo-50 px-4 py-2 rounded-xl transition-all">
+                    &rarr; العودة للصفحة الرئيسية
+                </button>
+                <article class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-6 sm:p-10 space-y-6">
+                    <div class="w-full h-80 rounded-2xl overflow-hidden bg-slate-950">
+                        <img id="articleImage" src="" alt="صورة المقال" class="w-full h-full object-cover">
+                    </div>
+                    <div class="space-y-3">
+                        <span id="articleBadge" class="text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1 rounded-full border border-amber-200"></span>
+                        <h1 id="articleTitle" class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight"></h1>
+                        <p class="text-xs text-slate-400">نُشر عبر فريق أبحاث سوق العمل - منصة رشّح</p>
+                    </div>
+                    <div class="border-t border-slate-100 pt-6">
+                        <div id="articleContent" class="text-sm text-slate-700 leading-loose whitespace-pre-line font-medium"></div>
+                    </div>
+                </article>
+            </main>
+
+            <!-- البحث -->
+            <main id="pageSearch" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <section class="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                        <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1114 0z"></path></svg>
+                            تحديد متطلبات الوظيفة
+                        </h2>
+                        <form id="searchForm" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">المسمى الوظيفي المطلوب (عربي أو إنجليزي) *</label>
+                                <input type="text" id="jobTitle" required placeholder="Business Administration، محاسب، مبيعات..." class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">المدينة</label>
+                                    <input type="text" id="city" placeholder="الدمام، الرياض، القاهرة..." class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">الحد الأدنى للخبرة</label>
+                                    <input type="number" id="experience" min="0" value="0" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 outline-none">
+                                </div>
+                            </div>
+                            <button type="submit" id="searchSubmitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                                <span>البحث والمطابقة الفورية</span>
+                            </button>
+                        </form>
+                    </section>
+
+                    <section class="lg:col-span-8 space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <h3 class="text-lg font-bold text-slate-900">المرشحون المطابقون</h3>
+                            <span id="resultsCountBadge" class="hidden text-xs bg-amber-50 text-amber-800 border border-amber-200 font-bold px-3 py-1 rounded-full"></span>
+                        </div>
+                        <div id="candidatesList" class="space-y-4">
+                            <div class="bg-white border border-dashed border-slate-300 rounded-2xl p-12 text-center text-slate-500">
+                                <p class="font-medium text-slate-700">لم تقم بالبحث بعد</p>
+                                <p class="text-xs mt-1">اكتب المسمى الوظيفي المطلوب واضغط على "البحث والمطابقة الفورية".</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <!-- 3. صفحة الباقات وطرق الدفع -->
+            <main id="pagePlans" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="bg-amber-50 text-amber-800 text-xs font-bold px-3.5 py-1.5 rounded-full border border-amber-200">باقات شحن رصيد السير الذاتية</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-3 mb-2">اختر الباقة المناسبة لشركتك</h2>
+                    <p class="text-xs text-slate-500">ادفع بسهولة عبر التحويل البنكي السعودي المباشر أو عبر PayPal</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900">باقة الانطلاق</h3>
+                            <div class="text-3xl font-black text-slate-900 my-4">199 <span class="text-xs font-normal text-slate-500">ريال / 5 CV</span></div>
+                            <ul class="space-y-2 text-xs text-slate-600 mb-6">
+                                <li>✓ فتح 5 سير ذاتية كاملة</li>
+                                <li>✓ أرقام هواتف وواتساب مباشرة</li>
+                            </ul>
+                        </div>
+                        <button onclick="openPaymentModal('starter', 'باقة الانطلاق', 199, 53)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 rounded-xl text-xs transition-all">
+                            اختر طريقة الدفع (199 ريال)
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-900 text-white rounded-3xl p-6 border-2 border-amber-500 shadow-xl flex flex-col justify-between relative transform md:-translate-y-2">
+                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 gold-bg text-slate-950 text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider">الأكثر طلباً</span>
+                        <div>
+                            <h3 class="font-bold text-lg gold-gradient-text">باقة الشركات المتقدمة</h3>
+                            <div class="text-3xl font-black my-4">699 <span class="text-xs font-normal text-slate-400">ريال / 25 CV</span></div>
+                            <ul class="space-y-2 text-xs text-slate-300 mb-6">
+                                <li>✓ فتح 25 سيرة ذاتية كاملة</li>
+                                <li>✓ تحميل ملفات الـ PDF الأصلية</li>
+                            </ul>
+                        </div>
+                        <button onclick="openPaymentModal('pro', 'باقة الشركات المتقدمة', 699, 186)" class="w-full gold-bg text-slate-950 font-black py-3.5 rounded-xl text-xs transition-all shadow-lg shadow-amber-500/20">
+                            شحن وتفعيل الباقة (699 ريال)
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900">باقة التوظيف المفتوحة</h3>
+                            <div class="text-3xl font-black text-slate-900 my-4">1999 <span class="text-xs font-normal text-slate-500">ريال / 100 CV</span></div>
+                            <ul class="space-y-2 text-xs text-slate-600 mb-6">
+                                <li>✓ فتح 100 سيرة ذاتية فوراً</li>
+                                <li>✓ مدير حساب خاص لمؤسستك</li>
+                            </ul>
+                        </div>
+                        <button onclick="openPaymentModal('unlimited', 'باقة التوظيف المفتوحة', 1999, 533)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-3 rounded-xl text-xs transition-all">
+                            اختر طريقة الدفع (1999 ريال)
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- لوحة الإدارة (محمية) -->
+            <main id="pageAdmin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs text-slate-500 block mb-1">إجمالي المرشحين بالقاعدة الحقيقية</span>
+                        <span id="admTotalCand" class="text-3xl font-black text-slate-900">-</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs text-slate-500 block mb-1">الشركات المسجلة</span>
+                        <span id="admTotalClients" class="text-3xl font-black text-amber-600">-</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs text-slate-500 block mb-1">السير الذاتية المفتوحة</span>
+                        <span id="admTotalReq" class="text-3xl font-black text-emerald-600">-</span>
+                    </div>
+                </div>
+
+                <!-- إعدادات وتعديل بوابات الدفع في لوحة الإدارة -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-lg">💳 إدارة بوابات الدفع والحساب البنكي السعودي</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">اسم البنك السعودي</label>
+                            <input type="text" id="editBankName" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">اسم صاحب الحساب / المؤسسة</label>
+                            <input type="text" id="editAccountName" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">رقم الآيبان (IBAN)</label>
+                            <input type="text" id="editIban" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">بريد حساب PayPal</label>
+                            <input type="email" id="editPaypalEmail" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                    </div>
+                    <button onclick="savePaymentGatewaysCMS()" class="gold-bg text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs">
+                        حفظ وتحديث بوابات الدفع
+                    </button>
+                </div>
+
+                <!-- جدول الشركات المنضمة -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <h3 class="font-bold text-slate-900 text-base mb-4">🏢 قائمة أحدث الشركات المنضمة للمنصة</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-xs">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 font-bold">
+                                <tr>
+                                    <th class="p-3">اسم الشركة</th>
+                                    <th class="p-3">اسم المسؤول</th>
+                                    <th class="p-3">البريد</th>
+                                    <th class="p-3">الهاتف</th>
+                                    <th class="p-3">الرصيد</th>
+                                    <th class="p-3">تاريخ الانضمام</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admClientsTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CMS Controls -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-6">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h3 class="font-bold text-slate-900 text-lg">⚙️ لوحة إدارة محتوى الصفحة الرئيسية والروابط (CMS)</h3>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl space-y-3 border border-slate-200">
+                        <h4 class="font-bold text-xs text-slate-800">🔗 تعديل روابط منصات التواصل الاجتماعي</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <input type="text" id="editSocialWhatsapp" placeholder="واتساب" class="text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="editSocialLinkedin" placeholder="لينكد إن" class="text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="editSocialTwitter" placeholder="إكس (تويتر)" class="text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="editSocialInstagram" placeholder="انستجرام" class="text-xs px-3 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <button onclick="saveSocialsCMS()" class="gold-bg text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs">حفظ روابط السوشيال ميديا</button>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-xs text-slate-800">🎥 تعديل الفيديو التعريفي</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <input type="text" id="editVideoUrl" placeholder="رابط التضمين" class="text-xs px-3.5 py-2 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="editVideoTitle" placeholder="العنوان" class="text-xs px-3.5 py-2 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="editVideoDesc" placeholder="الوصف" class="text-xs px-3.5 py-2 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <button onclick="saveVideoCMS()" class="bg-slate-900 text-amber-400 font-bold px-4 py-2 rounded-xl text-xs">حفظ الفيديو</button>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl space-y-4 border border-slate-200">
+                        <h4 class="font-bold text-sm text-slate-900">📰 نشر مقال أو تقرير وظيفي جديد</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <input type="text" id="addNewsBadge" placeholder="تصنيف المقال" class="text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="addNewsTitle" placeholder="عنوان المقال *" class="text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 outline-none">
+                            <input type="text" id="addNewsImage" placeholder="رابط صورة المقال" class="text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 outline-none">
+                        </div>
+                        <textarea id="addNewsDesc" rows="5" placeholder="اكتب محتوى المقال والتقرير بالكامل هنا بتفاصيل مريحة..." class="w-full text-xs p-3.5 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                        <button onclick="saveNewsCMS()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-md">🚀 نشر المقال بالصورة في الصفحة الرئيسية</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <h3 class="font-bold text-slate-900 text-base mb-4">سجلات المرشحين الفعلية (مباشرة من قاعدة بياناتك)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-xs">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 font-bold">
+                                <tr>
+                                    <th class="p-3">الاسم الكامل</th>
+                                    <th class="p-3">المسمى والتخصص</th>
+                                    <th class="p-3">المدينة</th>
+                                    <th class="p-3">الخبرة</th>
+                                    <th class="p-3">المؤهل</th>
+                                    <th class="p-3">الهاتف</th>
+                                    <th class="p-3">البريد</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="bg-slate-950 border-t border-slate-800 text-white py-12 px-4 mt-16">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-2 text-center md:text-right">
+                    <div class="flex items-center justify-center md:justify-start gap-3">
+                        <div class="w-8 h-8 p-1.5 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-black gold-gradient-text tracking-tight leading-none">رَشِّــحْ | RASHEH TALENT</span>
+                    </div>
+                    <p class="text-xs text-slate-400">المنصة الأولى المعتمدة لترشيح الكوادر والتوظيف الفوري للشركات</p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a id="linkWhatsapp" href="https://wa.me/966500000000" target="_blank" class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500 flex items-center justify-center text-slate-300 hover:text-emerald-400 hover:scale-110 transition-all shadow-sm" title="واتساب"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.34C9.33 7.34 9 7.42 8.72 7.73C8.44 8.04 7.65 8.78 7.65 10.27C7.65 11.76 8.74 13.19 8.89 13.39C9.05 13.6 11.02 16.63 14.04 17.93C14.76 18.24 15.32 18.43 15.76 18.57C16.48 18.8 17.14 18.77 17.66 18.69C18.24 18.6 19.45 17.95 19.7 17.25C19.96 16.54 19.96 15.94 19.88 15.82C19.8 15.7 19.59 15.63 19.28 15.48C18.97 15.32 17.44 14.56 17.15 14.46C16.86 14.36 16.66 14.31 16.45 14.62C16.25 14.93 15.66 15.63 15.48 15.83C15.3 16.04 15.12 16.06 14.81 15.91C14.5 15.75 13.51 15.43 12.33 14.38C11.42 13.56 10.8 12.56 10.62 12.25C10.44 11.94 10.6 11.78 10.76 11.62C10.9 11.48 11.07 11.25 11.23 11.07C11.39 10.89 11.44 10.76 11.54 10.55C11.64 10.35 11.59 10.17 11.52 10.02C11.44 9.86 10.83 8.37 10.58 7.76C10.33 7.16 10.08 7.25 9.89 7.24L9.53 7.34Z"/></svg></a>
+                    <a id="linkLinkedin" href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500 flex items-center justify-center text-slate-300 hover:text-blue-400 hover:scale-110 transition-all shadow-sm" title="لينكد إن"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z"/></svg></a>
+                    <a id="linkTwitter" href="https://x.com" target="_blank" class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-400 flex items-center justify-center text-slate-300 hover:text-white hover:scale-110 transition-all shadow-sm" title="إكس"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a id="linkInstagram" href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 hover:border-pink-500 flex items-center justify-center text-slate-300 hover:text-pink-400 hover:scale-110 transition-all shadow-sm" title="انستجرام"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto text-center text-slate-500 text-[11px] mt-8 pt-6 border-t border-slate-900">
+                جميع الحقوق محفوظة © 2026 منصة رشّح (Rasheh Talent) - منظومة التوظيف السحابية الذكية
+            </div>
+        </footer>
+    </div>
+
+    <!-- نافذة الدفع واختيار البنك / PayPal (Payment Checkout Modal) -->
+    <div id="paymentCheckoutModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-slate-800 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900" id="payModalPlanTitle">شحن الباقة</h3>
+                    <p class="text-xs text-slate-500" id="payModalPriceSubtitle"></p>
+                </div>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+
+            <!-- خيارات الدفع -->
+            <div class="flex gap-2 bg-slate-100 p-1.5 rounded-2xl mb-6">
+                <button id="tabPayBank" onclick="togglePaymentMethod('bank')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-700 shadow-sm transition-all">
+                    🇸🇦 تحويل بنكي سعودي
+                </button>
+                <button id="tabPayPaypal" onclick="togglePaymentMethod('paypal')" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition-all">
+                    💳 الدفع عبر PayPal
+                </button>
+            </div>
+
+            <!-- 1. نموذج التحويل البنكي السعودي -->
+            <div id="paymentMethodBank" class="space-y-4">
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-2 text-xs text-amber-900">
+                    <div class="font-bold text-sm text-amber-950 mb-1">بيانات الحساب البنكي المعتمد:</div>
+                    <div>🏦 <b>البنك:</b> <span id="payBankName">مصرف الراجحي</span></div>
+                    <div>👤 <b>اسم الحساب:</b> <span id="payAccountName">مؤسسة منصة رشح</span></div>
+                    <div>🔢 <b>رقم الآيبان (IBAN):</b> <span id="payIban" class="font-mono font-bold text-indigo-700 select-all">SA0380000000608010167519</span></div>
+                </div>
+
+                <form id="bankTransferForm" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم صاحب الحساب المحوّل منه *</label>
+                        <input type="text" id="senderAccountName" required placeholder="مثال: شركة الرواد التقنية" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم البنك المحول منه *</label>
+                        <input type="text" id="senderBankName" required placeholder="مثال: البنك الأهلي، الراجحي، الإنماء" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 outline-none">
+                    </div>
+                    <button type="submit" class="w-full gold-bg text-slate-950 font-black py-3 rounded-xl text-xs transition-all shadow-md">
+                        تأكيد إرسال الحوالة وتفعيل الرصيد
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. الدفع عبر PayPal -->
+            <div id="paymentMethodPaypal" class="space-y-4 hidden text-center">
+                <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-xs text-indigo-900 text-right space-y-1">
+                    <div class="font-bold">الدفع الدولي عبر PayPal:</div>
+                    <p class="text-[11px] text-slate-600">سيتم تحويلك لحساب PayPal الرسمي لإتمام الدفع الآمن، ويُضاف الرصيد لحسابك فوراً.</p>
+                </div>
+
+                <div class="py-4">
+                    <div class="text-2xl font-black text-slate-900 mb-1" id="paypalUsdAmount">$53.00 USD</div>
+                    <p class="text-xs text-slate-400 mb-4">المبلغ المقابل للباقة المختارة</p>
+                    
+                    <button onclick="executePayPalPayment()" class="w-full bg-[#0070BA] hover:bg-[#005ea6] text-white font-bold py-3.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2">
+                        <span>💳 إتمام الدفع الآن عبر PayPal</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة فتح بيانات التواصل والـ CV -->
+    <div id="unlockModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900 mb-1">فتح بيانات السيرة الذاتية</h3>
+            <p class="text-xs text-amber-600 font-bold mb-3" id="unlockCandName"></p>
+            <div id="unlockedContent">
+                <p class="text-xs text-slate-600 mb-3">سيتم خصم (1 سيرة ذاتية) من رصيد شركتك لعرض رقم الهاتف والـ CV فوراً:</p>
+                <div class="flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeUnlockModal()" class="px-4 py-2 text-xs text-slate-600 hover:bg-slate-100 rounded-xl">إلغاء</button>
+                    <button type="button" onclick="confirmUnlock()" class="px-5 py-2 text-xs font-bold bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl shadow-md">تأكيد وخصم 1 CV</button>
+                </div>
+            </div>
+            <div id="unlockedCandidateResult" class="hidden bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-xs space-y-2 mt-2"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('rasheh_user') || 'null');
+        let currentCandId = null;
+        let siteArticles = [];
+        let selectedCheckoutPlan = { id: 'starter', title: 'باقة الانطلاق', price: 199, usd: 53 };
+
+        function checkInitialAuth() {
+            const savedEmail = localStorage.getItem('last_saved_email');
+            if (savedEmail && !currentUser) {
+                document.getElementById('loginEmail').value = savedEmail;
+            }
+
+            if (currentUser) {
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('mainAppScreen').classList.remove('hidden');
+                document.getElementById('mainAppScreen').classList.add('flex');
+                document.getElementById('userNameDisplay').textContent = currentUser.company_name;
+                document.getElementById('userCreditsDisplay').textContent = `${currentUser.credits_balance} CV`;
+                
+                const adminBtn = document.getElementById('navAdmin');
+                if (currentUser.is_admin === true) {
+                    adminBtn.style.display = 'inline-block';
+                } else {
+                    adminBtn.style.display = 'none';
+                }
+
+                loadCMSContent();
+            } else {
+                document.getElementById('authScreen').classList.remove('hidden');
+                document.getElementById('mainAppScreen').classList.add('hidden');
+                document.getElementById('mainAppScreen').classList.remove('flex');
+            }
+        }
+        checkInitialAuth();
+
+        function toggleAuthTab(mode) {
+            const isLogin = mode === 'login';
+            document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
+            document.getElementById('registerForm').classList.toggle('hidden', isLogin);
+            document.getElementById('authTabLogin').className = isLogin ? 'flex-1 py-2.5 text-xs font-bold rounded-xl gold-bg text-slate-950 shadow-md transition-all' : 'flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all';
+            document.getElementById('authTabRegister').className = !isLogin ? 'flex-1 py-2.5 text-xs font-bold rounded-xl gold-bg text-slate-950 shadow-md transition-all' : 'flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginSubmitBtn');
+            const emailInput = document.getElementById('loginEmail').value;
+            btn.innerHTML = '<span>جاري التحقق والدخول...</span>';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: emailInput,
+                        password: document.getElementById('loginPassword').value
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentUser = data.user;
+                    localStorage.setItem('rasheh_user', JSON.stringify(currentUser));
+                    localStorage.setItem('last_saved_email', emailInput);
+                    checkInitialAuth();
+                    navigateTo('home');
+                } else { alert(data.detail || 'بيانات غير صحيحة'); }
+            } catch (err) { alert('تأكد من تشغيل خادم الـ API'); }
+            finally {
+                btn.innerHTML = '<span>دخول إلى المنصة &larr;</span>';
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('regSubmitBtn');
+            const emailInput = document.getElementById('regEmail').value;
+            btn.innerHTML = '<span>جاري إنشاء الحساب...</span>';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('http://localhost:8000/api/auth/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        company_name: document.getElementById('regCompanyName').value,
+                        contact_name: document.getElementById('regContactName').value,
+                        email: emailInput,
+                        phone: document.getElementById('regPhone').value,
+                        password: document.getElementById('regPassword').value
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentUser = data.user;
+                    localStorage.setItem('rasheh_user', JSON.stringify(currentUser));
+                    localStorage.setItem('last_saved_email', emailInput);
+                    alert(data.message);
+                    checkInitialAuth();
+                    navigateTo('home');
+                } else { alert(data.detail || 'فشل إنشاء الحساب'); }
+            } catch (err) { alert('تأكد من تشغيل خادم الـ API'); }
+            finally {
+                btn.innerHTML = '<span>إنشاء الحساب واستلام 2 CV مجاناً 🎉</span>';
+                btn.disabled = false;
+            }
+        });
+
+        function logout() {
+            if (currentUser && currentUser.email) {
+                localStorage.setItem('last_saved_email', currentUser.email);
+            }
+            localStorage.removeItem('rasheh_user');
+            currentUser = null;
+            checkInitialAuth();
+        }
+
+        function navigateTo(page) {
+            if (page === 'admin' && (!currentUser || currentUser.is_admin !== true)) {
+                alert('عذراً، هذه الصفحة مخصصة لمدير المنصة فقط');
+                return;
+            }
+
+            document.getElementById('pageHome').classList.toggle('hidden', page !== 'home');
+            document.getElementById('pageArticle').classList.toggle('hidden', page !== 'article');
+            document.getElementById('pageSearch').classList.toggle('hidden', page !== 'search');
+            document.getElementById('pagePlans').classList.toggle('hidden', page !== 'plans');
+            document.getElementById('pageAdmin').classList.toggle('hidden', page !== 'admin');
+
+            const activeClass = 'px-3.5 py-1.5 rounded-lg text-xs font-bold gold-bg text-slate-950 shadow-sm transition-all';
+            const inactiveClass = 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all';
+
+            document.getElementById('navHome').className = (page === 'home' || page === 'article') ? activeClass : inactiveClass;
+            document.getElementById('navSearch').className = page === 'search' ? activeClass : inactiveClass;
+            document.getElementById('navPlans').className = page === 'plans' ? activeClass : inactiveClass;
+            document.getElementById('navAdmin').className = page === 'admin' ? activeClass : 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 transition-all';
+
+            if (page === 'admin') loadAdminData();
+            if (page === 'home') loadCMSContent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // بوابات الدفع (Modal Checkout)
+        function openPaymentModal(planId, title, price, usd) {
+            selectedCheckoutPlan = { id: planId, title: title, price: price, usd: usd };
+            document.getElementById('payModalPlanTitle').textContent = `شحن ${title}`;
+            document.getElementById('payModalPriceSubtitle').textContent = `القيمة الإجمالية: ${price} ريال سعودي ($${usd} USD)`;
+            document.getElementById('paypalUsdAmount').textContent = `$${usd}.00 USD`;
+            document.getElementById('paymentCheckoutModal').classList.remove('hidden');
+            document.getElementById('paymentCheckoutModal').classList.add('flex');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentCheckoutModal').classList.add('hidden');
+            document.getElementById('paymentCheckoutModal').classList.remove('flex');
+        }
+
+        function togglePaymentMethod(method) {
+            const isBank = method === 'bank';
+            document.getElementById('paymentMethodBank').classList.toggle('hidden', !isBank);
+            document.getElementById('paymentMethodPaypal').classList.toggle('hidden', isBank);
+            document.getElementById('tabPayBank').className = isBank ? 'flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-700 shadow-sm transition-all' : 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-600';
+            document.getElementById('tabPayPaypal').className = !isBank ? 'flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-700 shadow-sm transition-all' : 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-600';
+        }
+
+        // إرسال إشعار التحويل البنكي
+        document.getElementById('bankTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const res = await fetch('http://localhost:8000/api/billing/bank-transfer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    client_email: currentUser.email,
+                    plan_id: selectedCheckoutPlan.id,
+                    sender_name: document.getElementById('senderAccountName').value,
+                    bank_name: document.getElementById('senderBankName').value,
+                    amount: selectedCheckoutPlan.price
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                currentUser.credits_balance = data.new_balance;
+                localStorage.setItem('rasheh_user', JSON.stringify(currentUser));
+                document.getElementById('userCreditsDisplay').textContent = `${currentUser.credits_balance} CV`;
+                alert(data.message);
+                closePaymentModal();
+                navigateTo('search');
+            }
+        });
+
+        // تنفيذ دفع PayPal
+        async function executePayPalPayment() {
+            const res = await fetch('http://localhost:8000/api/billing/paypal-success', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    client_email: currentUser.email,
+                    plan_id: selectedCheckoutPlan.id,
+                    order_id: 'PAYPAL_' + Date.now()
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                currentUser.credits_balance = data.new_balance;
+                localStorage.setItem('rasheh_user', JSON.stringify(currentUser));
+                document.getElementById('userCreditsDisplay').textContent = `${currentUser.credits_balance} CV`;
+                alert(data.message);
+                closePaymentModal();
+                navigateTo('search');
+            }
+        }
+
+        function openFullArticle(idx) {
+            const article = siteArticles[idx];
+            if (!article) return;
+            document.getElementById('articleImage').src = article.image_url || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600';
+            document.getElementById('articleBadge').textContent = article.badge || 'تقرير وإحصائيات';
+            document.getElementById('articleTitle').textContent = article.title;
+            document.getElementById('articleContent').textContent = article.desc;
+            navigateTo('article');
+        }
+
+        async function loadCMSContent() {
+            try {
+                const res = await fetch('http://localhost:8000/api/cms/content');
+                const data = await res.json();
+                siteArticles = data.news || [];
+
+                if (data.bank_details) {
+                    document.getElementById('payBankName').textContent = data.bank_details.bank_name;
+                    document.getElementById('payAccountName').textContent = data.bank_details.account_name;
+                    document.getElementById('payIban').textContent = data.bank_details.iban;
+
+                    document.getElementById('editBankName').value = data.bank_details.bank_name;
+                    document.getElementById('editAccountName').value = data.bank_details.account_name;
+                    document.getElementById('editIban').value = data.bank_details.iban;
+                }
+                if (data.paypal_email) {
+                    document.getElementById('editPaypalEmail').value = data.paypal_email;
+                }
+
+                if (data.social_links) {
+                    document.getElementById('linkWhatsapp').href = data.social_links.whatsapp || '#';
+                    document.getElementById('linkLinkedin').href = data.social_links.linkedin || '#';
+                    document.getElementById('linkTwitter').href = data.social_links.twitter || '#';
+                    document.getElementById('linkInstagram').href = data.social_links.instagram || '#';
+
+                    document.getElementById('editSocialWhatsapp').value = data.social_links.whatsapp || '';
+                    document.getElementById('editSocialLinkedin').value = data.social_links.linkedin || '';
+                    document.getElementById('editSocialTwitter').value = data.social_links.twitter || '';
+                    document.getElementById('editSocialInstagram').value = data.social_links.instagram || '';
+                }
+
+                document.getElementById('homeVideoIframe').src = data.video_url;
+                document.getElementById('homeVideoTitle').textContent = data.video_title;
+                document.getElementById('homeVideoDesc').textContent = data.video_desc;
+
+                document.getElementById('editVideoUrl').value = data.video_url;
+                document.getElementById('editVideoTitle').value = data.video_title;
+                document.getElementById('editVideoDesc').value = data.video_desc;
+
+                document.getElementById('homeTestimonialsGrid').innerHTML = data.testimonials.map(t => `
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="text-amber-400 text-sm">${'★'.repeat(t.rating)}</div>
+                        <p class="text-xs text-slate-600 leading-relaxed">"${t.comment}"</p>
+                        <div class="border-t border-slate-100 pt-3">
+                            <h4 class="font-bold text-xs text-slate-900">${t.name}</h4>
+                            <span class="text-[10px] text-slate-400">${t.role}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('homeNewsGrid').innerHTML = siteArticles.map((n, idx) => `
+                    <div onclick="openFullArticle(${idx})" class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between cursor-pointer group">
+                        <div>
+                            <div class="h-48 w-full overflow-hidden bg-slate-950 relative">
+                                <img src="${n.image_url || 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600'}" alt="${n.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 right-3 text-[10px] bg-slate-900/80 text-amber-300 font-bold px-3 py-1 rounded-full backdrop-blur-sm border border-amber-500/30">${n.badge}</span>
+                            </div>
+                            <div class="p-6 space-y-2.5">
+                                <h4 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">${n.title}</h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">${n.desc}</p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-5 pt-2 flex items-center justify-between text-[11px] font-bold text-indigo-600">
+                            <span>اقرأ المقال بالكامل &larr;</span>
+                            <span class="text-slate-400 font-normal">تقرير 2026</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        async function savePaymentGatewaysCMS() {
+            await fetch('http://localhost:8000/api/cms/update-payment-gateways', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    bank_details: {
+                        bank_name: document.getElementById('editBankName').value,
+                        account_name: document.getElementById('editAccountName').value,
+                        iban: document.getElementById('editIban').value
+                    },
+                    paypal_email: document.getElementById('editPaypalEmail').value
+                })
+            });
+            alert('تم تحديث بيانات الحساب البنكي والـ PayPal بنجاح!');
+            loadCMSContent();
+        }
+
+        async function saveSocialsCMS() {
+            await fetch('http://localhost:8000/api/cms/update-socials', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    whatsapp: document.getElementById('editSocialWhatsapp').value,
+                    linkedin: document.getElementById('editSocialLinkedin').value,
+                    twitter: document.getElementById('editSocialTwitter').value,
+                    instagram: document.getElementById('editSocialInstagram').value
+                })
+            });
+            alert('تم حفظ وتحديث روابط السوشيال ميديا فوراً!');
+            loadCMSContent();
+        }
+
+        async function saveVideoCMS() {
+            await fetch('http://localhost:8000/api/cms/update-video', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    video_url: document.getElementById('editVideoUrl').value,
+                    video_title: document.getElementById('editVideoTitle').value,
+                    video_desc: document.getElementById('editVideoDesc').value
+                })
+            });
+            alert('تم تحديث بيانات الفيديو بنجاح!');
+            loadCMSContent();
+        }
+
+        async function saveNewsCMS() {
+            const title = document.getElementById('addNewsTitle').value;
+            const desc = document.getElementById('addNewsDesc').value;
+            if (!title || !desc) return alert('يرجى كتابة عنوان المقال ومحتواه');
+
+            await fetch('http://localhost:8000/api/cms/add-news', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    badge: document.getElementById('addNewsBadge').value || 'تقرير وظيفي',
+                    title: title,
+                    desc: desc,
+                    image_url: document.getElementById('addNewsImage').value
+                })
+            });
+            alert('تم نشر المقال بالصورة في الصفحة الرئيسية بنجاح!');
+            document.getElementById('addNewsBadge').value = '';
+            document.getElementById('addNewsTitle').value = '';
+            document.getElementById('addNewsImage').value = '';
+            document.getElementById('addNewsDesc').value = '';
+            loadCMSContent();
+        }
+
+        async function loadAdminData() {
+            const stats = await (await fetch('http://localhost:8000/api/admin/stats')).json();
+            document.getElementById('admTotalCand').textContent = Number(stats.total_candidates).toLocaleString();
+            document.getElementById('admTotalClients').textContent = stats.total_clients;
+            document.getElementById('admTotalReq').textContent = stats.total_requests;
+
+            const clientsRes = await fetch('http://localhost:8000/api/admin/clients');
+            const clientsData = await clientsRes.json();
+            const clients = clientsData.clients || [];
+
+            document.getElementById('admClientsTableBody').innerHTML = clients.map(cl => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3 font-bold text-slate-900">${cl.company_name}</td>
+                    <td class="p-3 text-slate-700">${cl.contact_name}</td>
+                    <td class="p-3 text-indigo-700 font-medium">${cl.email}</td>
+                    <td class="p-3">${cl.phone || '-'}</td>
+                    <td class="p-3"><span class="bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-md font-black">${cl.credits_balance} CV</span></td>
+                    <td class="p-3 text-slate-400">${new Date(cl.created_at).toLocaleDateString('ar-SA')}</td>
+                </tr>
+            `).join('');
+
+            const res = await fetch('http://localhost:8000/api/admin/candidates?limit=50');
+            const data = await res.json();
+            const candidates = data.candidates || [];
+
+            document.getElementById('admTableBody').innerHTML = candidates.map(c => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3 font-bold text-slate-900">${c.full_name}</td>
+                    <td class="p-3 text-amber-700 font-semibold">${c.job_title}</td>
+                    <td class="p-3">${c.city || 'غير محدد'}</td>
+                    <td class="p-3 font-bold text-slate-900">${c.years_of_experience} سنوات</td>
+                    <td class="p-3 text-slate-500">${c.education || 'جامعي'}</td>
+                    <td class="p-3 font-medium">${c.phone || '-'}</td>
+                    <td class="p-3 text-slate-400">${c.email}</td>
+                </tr>
+            `).join('');
+        }
+
+        function openUnlock(candId, name) {
+            currentCandId = candId;
+            document.getElementById('unlockCandName').textContent = `المرشح: ${name}`;
+            document.getElementById('unlockedContent').classList.remove('hidden');
+            document.getElementById('unlockedCandidateResult').classList.add('hidden');
+            document.getElementById('unlockModal').classList.remove('hidden');
+            document.getElementById('unlockModal').classList.add('flex');
+        }
+        function closeUnlockModal() {
+            document.getElementById('unlockModal').classList.add('hidden');
+            document.getElementById('unlockModal').classList.remove('flex');
+        }
+
+        async function confirmUnlock() {
+            const res = await fetch('http://localhost:8000/api/billing/unlock-candidate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ candidate_id: currentCandId, client_email: currentUser.email })
+            });
+            const data = await res.json();
+
+            if (!data.success) {
+                alert(data.message);
+                closeUnlockModal();
+                navigateTo('plans');
+                return;
+            }
+
+            currentUser.credits_balance = data.new_balance;
+            localStorage.setItem('rasheh_user', JSON.stringify(currentUser));
+            document.getElementById('userCreditsDisplay').textContent = `${currentUser.credits_balance} CV`;
+
+            document.getElementById('unlockedContent').classList.add('hidden');
+            const resDiv = document.getElementById('unlockedCandidateResult');
+            resDiv.innerHTML = `
+                <div class="font-bold text-emerald-800 text-sm mb-1.5">🎉 تم فتح بيانات المرشح بنجاح!</div>
+                <div>👤 <b>الاسم:</b> ${data.candidate.full_name}</div>
+                <div>📞 <b>الهاتف:</b> <a href="tel:${data.candidate.phone}" class="text-amber-700 font-bold underline">${data.candidate.phone}</a></div>
+                <div>📧 <b>البريد:</b> ${data.candidate.email}</div>
+                <div class="mt-2 text-amber-800 font-bold">الرصيد المتبقي لشركتك: ${data.new_balance} CV</div>
+            `;
+            resDiv.classList.remove('hidden');
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('searchSubmitBtn');
+            const list = document.getElementById('candidatesList');
+            const badge = document.getElementById('resultsCountBadge');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>جاري تحليل ومطابقة الكفاءات...</span>';
+
+            const payload = {
+                job_title: document.getElementById('jobTitle').value,
+                city: document.getElementById('city').value || null,
+                min_experience: parseInt(document.getElementById('experience').value) || 0,
+                skills: []
+            };
+
+            try {
+                const res = await fetch('http://localhost:8000/api/match-candidates', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                const candidates = data.candidates || [];
+
+                if (candidates.length === 0) {
+                    list.innerHTML = `<div class="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500">لم يتم العثور على مرشحين متطابقين مع هذا المسمى والخبرة.</div>`;
+                    badge.classList.add('hidden');
+                    return;
+                }
+
+                badge.textContent = `تم العثور على ${candidates.length} مرشح متوافق`;
+                badge.classList.remove('hidden');
+
+                list.innerHTML = candidates.map(c => `
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md transition-all space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-bold text-slate-900 text-base">${c.full_name}</h4>
+                                    <span class="bg-amber-50 text-amber-800 border border-amber-200 text-xs px-2.5 py-0.5 rounded-full font-bold">تطابق ${c.match_percentage}%</span>
+                                </div>
+                                <p class="text-amber-700 font-semibold text-xs mt-0.5">${c.job_title}</p>
+                            </div>
+                            <button onclick="openUnlock('${c.candidate_id}', '${c.full_name}')" class="bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm">
+                                🔓 فتح السيرة الذاتية ورقم الهاتف
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl text-xs text-slate-700">
+                            <div><span class="text-slate-400 block mb-0.5">المدينة:</span><b>📍 ${c.city || 'غير محدد'}</b></div>
+                            <div><span class="text-slate-400 block mb-0.5">الخبرة:</span><b>💼 ${c.years_of_experience} سنوات</b></div>
+                            <div><span class="text-slate-400 block mb-0.5">المؤهل:</span><b>🎓 ${c.education || 'جامعي'}</b></div>
+                            <div><span class="text-slate-400 block mb-0.5">بيانات الاتصال:</span><b class="text-amber-700">🔒 محجوبة برصيد</b></div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) { alert('تأكد من تشغيل الخادم'); }
+            finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>البحث والمطابقة الفورية</span>';
+            }
+        });
+    </script>
+</body>
+</html>
